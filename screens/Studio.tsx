@@ -15,7 +15,7 @@ const Studio = () => {
     <View style={styles.container}>
       <Header />
       <View style={styles.innerContainer}>
-      {/* <Text style={styles.title}>Welcome to Sonic Studio</Text> */}
+      <Text style={styles.title}>Welcome to Sonic Studio</Text>
       <VoiceInterface
         isRecording={isRecording}
         setIsRecording={setIsRecording}
