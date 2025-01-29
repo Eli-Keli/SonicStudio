@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, TouchableOpacity, ScrollView } from 're
 
 import { Ionicons } from '@expo/vector-icons';
 import Header from './Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Tutorial {
   title: string;
@@ -19,7 +20,7 @@ interface TutorialDetailProps {
 
 const TutorialDetail: React.FC<TutorialDetailProps> = ({ selectedTutorial, setSelectedTutorial }) => {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Header />
         <ScrollView style={styles.scrollView}>
             <TouchableOpacity onPress={() => setSelectedTutorial(null)} style={styles.backButton}>
@@ -58,7 +59,7 @@ const TutorialDetail: React.FC<TutorialDetailProps> = ({ selectedTutorial, setSe
             </View>
             </View>
         </ScrollView>
-    </View>
+    </SafeAreaView>
     );
 };
 

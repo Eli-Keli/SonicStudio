@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 
 // Components
 import Header from 'components/Header'
@@ -7,6 +7,7 @@ import VoiceInterface from 'components/VoiceInterface'
 import RecordPlayAudio from 'components/RecordPlayAudio'
 import Editor from 'components/CodeEditor'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import RecentRecordings from 'components/RecentRecordings'
 
 const Studio = () => {
   const [isRecording, setIsRecording] = React.useState(false)
@@ -16,22 +17,21 @@ const Studio = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-    <View>
       <Header />
-      <View style={styles.innerContainer}>
+      <ScrollView style={styles.innerContainer} showsVerticalScrollIndicator={false}>
       {/* <Text style={styles.title}>Welcome to Sonic Studio</Text> */}
-      {/* <VoiceInterface
+        <Editor />
+      <VoiceInterface
         isRecording={isRecording}
         setIsRecording={setIsRecording}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         recordingTime={recordingTime}
         setRecordingTime={setRecordingTime}
-      /> */}
-      {/* <RecordPlayAudio /> */}
-      <Editor />
-      </View>
-    </View>
+        />
+        <RecentRecordings />
+        {/* <RecordPlayAudio /> */}
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -40,7 +40,6 @@ export default Studio
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#1f2937",
   },
   innerContainer: {
