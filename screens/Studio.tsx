@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 // Components
 import Header from 'components/Header'
 import VoiceInterface from 'components/VoiceInterface'
+import RecordPlayAudio from 'components/RecordPlayAudio'
 
 const Studio = () => {
   const [isRecording, setIsRecording] = React.useState(false)
@@ -24,6 +25,7 @@ const Studio = () => {
         recordingTime={recordingTime}
         setRecordingTime={setRecordingTime}
       />
+      <RecordPlayAudio />
       </View>
     </View>
   )

@@ -7,7 +7,7 @@ import Header from "components/Header";
 export default function App() {
   return (
     <NavigationContainer>
-        <StatusBar barStyle="light-content" backgroundColor="#1f2937" />
+        <StatusBar barStyle="dark-content" backgroundColor="#1f2937" />
       <SafeAreaView>
       </SafeAreaView>
       <TabNavigator />

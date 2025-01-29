@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sonic-studio",
-    "slug": "sonic-studio",
+    "name": "SonicStudio",
+    "slug": "SonicStudio",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
