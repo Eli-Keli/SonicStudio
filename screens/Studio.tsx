@@ -5,6 +5,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Header from 'components/Header'
 import VoiceInterface from 'components/VoiceInterface'
 import RecordPlayAudio from 'components/RecordPlayAudio'
+import Editor from 'components/CodeEditor'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Studio = () => {
   const [isRecording, setIsRecording] = React.useState(false)
@@ -13,21 +15,24 @@ const Studio = () => {
 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+    <View>
       <Header />
       <View style={styles.innerContainer}>
-      <Text style={styles.title}>Welcome to Sonic Studio</Text>
-      <VoiceInterface
+      {/* <Text style={styles.title}>Welcome to Sonic Studio</Text> */}
+      {/* <VoiceInterface
         isRecording={isRecording}
         setIsRecording={setIsRecording}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         recordingTime={recordingTime}
         setRecordingTime={setRecordingTime}
-      />
-      <RecordPlayAudio />
+      /> */}
+      {/* <RecordPlayAudio /> */}
+      <Editor />
       </View>
     </View>
+    </SafeAreaView>
   )
 }
 
