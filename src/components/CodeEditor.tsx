@@ -5,7 +5,7 @@ import { sendToSonicPi } from '../util/oscHandler';
 const Editor = () => {
 
     const initialCode = 
-    `# Welcome to Sonic Pi
+    `
     use_bpm 120
 
     live_loop :simple_loop do
