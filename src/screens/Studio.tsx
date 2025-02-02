@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,20 +7,22 @@ import Header from '../components/Header';
 import VoiceInterface from '../components/VoiceInterface';
 import Editor from '../components/CodeEditor';
 import RecentRecordings from '../components/RecentRecordings';
+import AIMusicGenerator from '../components/AIMusicGenerator';
 
 const Studio = () => {
-    const [isRecording, setIsRecording] = React.useState(false);
-    const [isPlaying, setIsPlaying] = React.useState(false);
-    const [recordingTime, setRecordingTime] = React.useState(0);
-    const [recordingStatus, setRecordingStatus] = React.useState('IDLE');
-    const [audioPermission, setAudioPermission] = React.useState(false);
-    const [recordings, setRecordings] = React.useState([]);
+    const [isRecording, setIsRecording] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [recordingTime, setRecordingTime] = useState(0);
+    const [recordingStatus, setRecordingStatus] = useState('IDLE');
+    const [audioPermission, setAudioPermission] = useState(false);
+    const [recordings, setRecordings] = useState([]);
+    const [generatedCode, setGeneratedCode] = useState('');
 
     return (
         <SafeAreaView style={styles.container}>
-            <View>
                 <Header />
-                <ScrollView style={styles.innerContainer}>
+            <ScrollView>
+                <View style={styles.innerContainer}>
                     <VoiceInterface
                         isRecording={isRecording}
                         setIsRecording={setIsRecording}
@@ -32,12 +34,13 @@ const Studio = () => {
                         setAudioPermission={setAudioPermission}
                         recordingStatus={recordingStatus}
                         setRecordingStatus={setRecordingStatus}
-                        setRecordings={setRecordings} // Pass setRecordings prop
+                        setRecordings={setRecordings}
                     />
-                    <Editor />
                     <RecentRecordings recordings={recordings} setRecordings={setRecordings} />
-                </ScrollView>
-            </View>
+                    <AIMusicGenerator setGeneratedCode={setGeneratedCode} />
+                    <Editor generatedCode={generatedCode} />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

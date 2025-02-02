@@ -1,9 +1,8 @@
-import Header from '../components/Header';
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-
-import TutorialDetail from '../components/TutorialDetail';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
+import TutorialDetail from '../components/TutorialDetail';
 
 const tutorials = [
   {
@@ -128,98 +127,86 @@ const tutorials = [
   }
 ];
 
-
-interface Tutorial {
-    id: number;
-    title: string;
-    duration: string;
-    progress: number;
-    chapters: { title: string; completed: boolean }[];
-    interactive: { exercises: string[]; currentExercise: number };
-}
-
-
 const Learn = () => {
-  const [selectedTutorial, setSelectedTutorial] = React.useState<Tutorial | null>(null);
+  const [selectedTutorial, setSelectedTutorial] = useState(null);
 
+  if (selectedTutorial) {
+    return (
+      <TutorialDetail
+        selectedTutorial={selectedTutorial}
+        setSelectedTutorial={setSelectedTutorial}
+      />
+    );
+  }
 
-  return selectedTutorial ? (
-    <TutorialDetail selectedTutorial={selectedTutorial} setSelectedTutorial={setSelectedTutorial} />
-  ) : (
+  return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <ScrollView>
-      <Text style={styles.title}>Learn Music Coding</Text>
-      <View style={styles.tutorialList}>
+      <Text style={{ color: 'white', fontSize: 24, margin: 16 }}>Learn Music Coding</Text>
+      <ScrollView style={styles.scrollView}>
         {tutorials.map((tutorial) => (
-          <View
+          <TouchableOpacity
             key={tutorial.id}
-            style={styles.tutorialCard}
-            onTouchEnd={() => setSelectedTutorial(tutorial)}
+            style={styles.tutorialContainer}
+            onPress={() => setSelectedTutorial(tutorial)}
           >
-            <View style={styles.tutorialHeader}>
-              <Text style={styles.tutorialTitle}>{tutorial.title}</Text>
+            <Text style={styles.tutorialTitle}>{tutorial.title}</Text>
+            <View style={styles.tutorialDurationContainer}>
               <Text style={styles.tutorialDuration}>{tutorial.duration}</Text>
+              <View style={styles.progressBar}>
+                <View
+                  style={[
+                    styles.progress,
+                    { width: `${tutorial.progress}%` },
+                  ]}
+                />
+              </View>
             </View>
-            <View style={styles.progressBarBackground}>
-              <View
-                style={[styles.progressBarForeground, { width: `${tutorial.progress}%` }]}
-              />
-            </View>
-          </View>
+          </TouchableOpacity>
         ))}
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Learn
+export default Learn;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1f2937",
+    backgroundColor: '#1f2937',
   },
-  tutorialList: {
-    paddingHorizontal: 16,
-    marginTop: 16,
+  scrollView: {
+    flex: 1,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-    marginTop: 16,
-    textAlign: 'center',
-  },
-  tutorialCard: {
-    backgroundColor: '#374151',
-    borderRadius: 8,
+  tutorialContainer: {
     padding: 16,
-    marginBottom: 16,
-  },
-  tutorialHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#334155',
   },
   tutorialTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
   },
-  tutorialDuration: {
-    fontSize: 14,
-    color: '#9CA3AF',
+  tutorialDurationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
   },
-  progressBarBackground: {
-    height: 10,
-    backgroundColor: '#4B5563',
-    borderRadius: 5,
+  tutorialDuration: {
+    color: '#94a3b8',
+    marginRight: 8,
+  },
+  progressBar: {
+    flex: 1,
+    height: 8,
+    backgroundColor: '#334155',
+    borderRadius: 4,
     overflow: 'hidden',
   },
-  progressBarForeground: {
+  progress: {
     height: '100%',
-    backgroundColor: '#10B981',
+    backgroundColor: '#3B82F6',
   },
 });

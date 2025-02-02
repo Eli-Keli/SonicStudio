@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { Ionicons } from '@expo/vector-icons';
+import { transcribeAudio } from '../util/speechToText';
 
 interface VoiceInterfaceProps {
     isRecording: boolean;
@@ -15,7 +16,7 @@ interface VoiceInterfaceProps {
     setAudioPermission: (value: boolean) => void;
     recordingStatus: string;
     setRecordingStatus: (value: string) => void;
-    setRecordings: (value: any) => void; // Add setRecordings prop
+    setRecordings: (value: any) => void;
 }
 
 const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
@@ -34,6 +35,7 @@ const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
     const [recording, setRecording] = useState<Audio.Recording | null>(null);
     const [playbackObject, setPlaybackObject] = useState<Audio.Sound | null>(null);
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+    const [transcription, setTranscription] = useState<string | null>(null);
 
     useEffect(() => {
         // Get permission to record audio
@@ -145,6 +147,25 @@ const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
         }
     }
 
+    async function handleTranscribeButtonPress() {
+        if (recording) {
+            const recordingUri = recording.getURI();
+            if (recordingUri) {
+                const fileUri = FileSystem.documentDirectory + `recordings/${recordingUri.split('/').pop()}`;
+                const file = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.Base64 });
+                const buffer = Buffer.from(file, 'base64');
+                try {
+                    const result = await transcribeAudio(buffer);
+                    setTranscription(result.text);
+                    Alert.alert("Transcription", result.text);
+                } catch (error) {
+                    console.error("Transcription error:", error);
+                    Alert.alert("Error", "Failed to transcribe audio.");
+                }
+            }
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.timerContainer}>
@@ -164,8 +185,15 @@ const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
                 >
                     <Ionicons name={isPlaying ? "pause" : "play"} size={48} color="#fff" />
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleTranscribeButtonPress}
+                >
+                    <Ionicons name="text" size={48} color="#fff" />
+                </TouchableOpacity>
             </View>
             <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}</Text>
+            {transcription && <Text style={styles.transcriptionText}>{transcription}</Text>}
         </View>
     );
 };
@@ -193,7 +221,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     button: {
-        padding: 48,
+        padding: 28,
         borderRadius: "100%",
         alignItems: 'center',
         justifyContent: 'center',
@@ -214,5 +242,11 @@ const styles = StyleSheet.create({
     },
     record:{
         backgroundColor: '#3B82F6',
+    },
+    transcriptionText: {
+        color: 'white',
+        marginTop: 16,
+        paddingHorizontal: 16,
+        textAlign: 'center',
     },
 });
