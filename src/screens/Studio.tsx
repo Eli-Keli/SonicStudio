@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Components
@@ -19,10 +19,10 @@ const Studio = () => {
     const [generatedCode, setGeneratedCode] = useState('');
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView className='flex-1 dark:bg-gray-800'>
                 <Header />
             <ScrollView>
-                <View style={styles.innerContainer}>
+                <View className='px-4'>
                     <VoiceInterface
                         isRecording={isRecording}
                         setIsRecording={setIsRecording}
@@ -46,13 +46,3 @@ const Studio = () => {
 };
 
 export default Studio;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#1f2937",
-    },
-    innerContainer: {
-        paddingHorizontal: 16,
-    },
-});

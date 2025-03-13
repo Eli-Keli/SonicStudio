@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import CodeEditor, { CodeEditorSyntaxStyles } from '@rivascva/react-native-code-editor';
 import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from 'react-native';
 import { sendToSonicPi } from '../util/oscHandler';
+import { useColorScheme } from 'react-native';
 
 interface EditorProps {
     generatedCode: string;
 }
 
 const Editor: React.FC<EditorProps> = ({ generatedCode }) => {
-    const [code, setCode] = useState<string>(`
-        use_bpm 120
+    const [code, setCode] = useState<string>(`use_bpm 120
 play :c4
 sleep 1
 play :d4
@@ -35,6 +35,8 @@ sleep 0.5
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const colorScheme = useColorScheme();
+
     useEffect(() => {
         if (generatedCode) {
             console.log("Code:", generatedCode)
@@ -54,35 +56,30 @@ sleep 0.5
     };
 
     return (
-        <View>
+        <View className="flex-1 p-4 dark:bg-gray-900 border border-gray-800">
+            <Text className='mb-4 px-4 dark:text-white'>Sonic Pi Code Editor:</Text>
             <CodeEditor
-                language='ruby'
-                syntaxStyle={CodeEditorSyntaxStyles.monokai}
-                showLineNumbers
-                initialValue={code}
-                // readOnly
-                style={{
-                    fontSize: 16,
-                    inputLineHeight: 24,
-                    highlighterLineHeight: 24,
-                    height: 300,
-                }}
+            language='ruby'
+            syntaxStyle={colorScheme === 'dark' ? CodeEditorSyntaxStyles.monokai : CodeEditorSyntaxStyles.github}
+            showLineNumbers
+            initialValue={code}
+            readOnly
+            style={{
+                fontSize: 16,
+                inputLineHeight: 24,
+                highlighterLineHeight: 24,
+                height: 300,
+            }}
             />
             {isLoading ? (
-                <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator size="large" color="#0000ff" />
             ) : (
-                <TouchableOpacity 
-                    onPress={handleSendCode} 
-                    style={ {
-                        backgroundColor: 'yellow',
-                        padding: 16,
-                        borderRadius: 8,
-                        alignItems: 'center',
-                        marginVertical: 16,
-                    }}
-                >
-                    <Text>Send to Sonic Pi</Text>
-                </TouchableOpacity>
+            <TouchableOpacity 
+                onPress={handleSendCode} 
+                className="bg-yellow-500 p-4 rounded-lg items-center my-4"
+            >
+                <Text className="dark:text-white text-lg">Send to Sonic Pi</Text>
+            </TouchableOpacity>
             )}
         </View>
     );

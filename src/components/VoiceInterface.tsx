@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { Ionicons } from '@expo/vector-icons';
@@ -167,86 +167,43 @@ const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.timerContainer}>
-                <Ionicons name="timer" size={24} color="#fff" />
-                <Text style={styles.timerText}>{recordingTime}s</Text>
+        <View className='flex-1 dark:bg-gray-800 items-center'>
+            <View className='flex-row items-center mb-4'>
+                <Ionicons name="timer" size={24} color="black" className="p-2 dark:text-white" />
+                <Text className='ml-2 dark:text-white'>
+                    {recordingTime}s
+                </Text>
             </View>
-            <View style={styles.buttonContainer}>
+            <View className='flex-row justify-around w-full'>
                 <TouchableOpacity
-                    style={[styles.button, recordingStatus === 'RECORDING' ? styles.recordingButton : styles.record]}
+                    className={`p-7 rounded-full items-center justify-center mx-2 ${recordingStatus === 'RECORDING' ? 'bg-red-500' : 'bg-blue-500'}`}
                     onPress={handleRecordButtonPress}
                 >
                     <Ionicons name={recordingStatus === 'RECORDING' ? 'stop' : 'mic'} size={48} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.button, isPlaying ? styles.playingButton : styles.play]}
+                    className={`p-7 rounded-full items-center justify-center mx-2 ${isPlaying ? 'bg-green-500' : 'bg-gray-700'}`}
                     onPress={handlePlayPauseButtonPress}
                 >
                     <Ionicons name={isPlaying ? "pause" : "play"} size={48} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.button}
+                    className='p-7 rounded-full items-center justify-center mx-2 bg-gray-700'
                     onPress={handleTranscribeButtonPress}
                 >
                     <Ionicons name="text" size={48} color="#fff" />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}</Text>
-            {transcription && <Text style={styles.transcriptionText}>{transcription}</Text>}
+            <Text className='dark:text-white mt-4'>
+                {`Recording status: ${recordingStatus}`}
+            </Text>
+            {
+                transcription && <Text className='dark:text-white mt-4 px-4 text-center'>
+                    {transcription}
+                </Text>
+            }
         </View>
     );
 };
 
 export default VoiceInterface;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#1f2937',
-        alignItems: 'center',
-    },
-    timerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 16,
-    },
-    timerText: {
-        color: '#fff',
-        marginLeft: 8,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-    },
-    button: {
-        padding: 28,
-        borderRadius: "100%",
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 8,
-    },
-    recordingButton: {
-        backgroundColor: '#EF4444',
-    },
-    play: {
-        backgroundColor: '#334155',
-    },
-    playingButton: {
-        backgroundColor: '#22C55E',
-    },
-    recordingStatusText: {
-        color: 'white',
-        marginTop: 16,
-    },
-    record:{
-        backgroundColor: '#3B82F6',
-    },
-    transcriptionText: {
-        color: 'white',
-        marginTop: 16,
-        paddingHorizontal: 16,
-        textAlign: 'center',
-    },
-});

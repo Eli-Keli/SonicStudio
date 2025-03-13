@@ -1,5 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useColorScheme } from "react-native";
 
 // Icons
 import { Ionicons } from "@expo/vector-icons";
@@ -12,6 +13,8 @@ import MarketPlace from "../screens/MarketPlace";
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
+    const colorScheme = useColorScheme();
+
     return (
             <Tab.Navigator 
                 id={undefined}
@@ -29,12 +32,13 @@ export default function TabNavigator() {
 
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
-                    tabBarActiveTintColor: "#60A5FA",
-                    tabBarInactiveTintColor: "gray",
+                    tabBarActiveTintColor:"#60A5FA",
+                    tabBarInactiveTintColor:"gray",
                     tabBarStyle: {
-                        backgroundColor: "#1e293b",
+                        backgroundColor: colorScheme === "dark" ? "#1e293b" : "#ffffff",
                         borderTopWidth: 1,
-                        borderTopColor: "#1e293b",
+                        borderTopColor: colorScheme === "dark" ? "#1e293b" : "#e5e7eb",
+                        paddingTop: 5,
                     }
                 })}
             >

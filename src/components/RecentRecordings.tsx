@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
@@ -66,67 +66,32 @@ const RecentRecordings: React.FC<RecentRecordingsProps> = ({ recordings, setReco
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Recent Recordings</Text>
-            <View style={styles.recordingsList}>
-                {recordings.length === 0 ? (
-                  <Text style={styles.recordingText}>No recordings available.</Text>
-                ) : (
-                  recordings.map((recording) => (
-                    <View key={recording.name} style={styles.recordingItem}>
-                      <Text style={styles.recordingText}>{recording.name}</Text>
-                      <View style={styles.buttonsContainer}>
-                        <TouchableOpacity onPress={() => handlePlayPause({ uri: recording.uri })}>
-                          <Ionicons name={playingUri === recording.uri ? "pause" : "play"} size={24} color="white" style={styles.icon} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleDownload({ uri: recording.uri, name: recording.name })}>
-                          <Ionicons name="download" size={24} color="white" style={styles.icon} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleDelete({ uri: recording.uri, name: recording.name })}>
-                          <Ionicons name="trash" size={24} color="white" style={styles.icon} />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  ))
-                )}
+        <View className="mt-4 dark:bg-gray-900">
+            <Text className="text-lg font-medium mb-2 dark:text-white">Recent Recordings</Text>
+            <View className="mb-2">
+          {recordings.length === 0 ? (
+            <Text className="text-black dark:text-white">No recordings available.</Text>
+          ) : (
+            recordings.map((recording) => (
+              <View key={recording.name} className="flex flex-row items-center justify-between p-2 rounded-lg mb-2 dark:bg-gray-800">
+                <Text className="dark:text-white">{recording.name}</Text>
+                <View className="flex flex-row ml-2">
+            <TouchableOpacity onPress={() => handlePlayPause({ uri: recording.uri })}>
+              <Ionicons name={playingUri === recording.uri ? "pause" : "play"} size={24} color="black" className="p-2 dark:text-white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDownload({ uri: recording.uri, name: recording.name })}>
+              <Ionicons name="download" size={24} color="black" className="p-2 dark:text-white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDelete({ uri: recording.uri, name: recording.name })}>
+              <Ionicons name="trash" size={24} color="black" className="p-2 dark:text-white" />
+            </TouchableOpacity>
+                </View>
+              </View>
+            ))
+          )}
             </View>
         </View>
     );
 };
 
 export default RecentRecordings;
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#1e293b',
-        marginTop: 16,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: '500',
-        marginBottom: 8,
-        color: 'white',
-    },
-    recordingsList: {
-        marginBottom: 8,
-    },
-    recordingItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 8,
-        backgroundColor: '#334155',
-        borderRadius: 8,
-        marginBottom: 8,
-    },
-    recordingText: {
-        color: 'white',
-    },
-    buttonsContainer: {
-        flexDirection: 'row',
-        marginLeft: 8,
-    },
-    icon: {
-        padding: 8,
-    },
-});
