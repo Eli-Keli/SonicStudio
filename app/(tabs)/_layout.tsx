@@ -11,6 +11,10 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 
+// Components
+import Header from '@/components/Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>['name'];
@@ -23,37 +27,45 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Studio',
-          tabBarIcon: ({ color }) => <TabBarIcon name="musical-notes" color={color} />,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="learn"
-        options={{
-          title: 'Learn',
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="marketplace"
-        options={{
-          title: 'Marketplace',
-          tabBarIcon: ({ color }) => <TabBarIcon name="cart" color={color} />,
-          headerShown: false,
-        }}
-      />
-    </Tabs>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors[colorScheme ?? 'light'].background }}>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          // Disable the static render of the header on web
+          // to prevent a hydration error in React Navigation v6.
+          headerShown: useClientOnlyValue(false, true),
+          tabBarStyle: {
+            backgroundColor: Colors[colorScheme ?? 'light'].background,
+            borderTopWidth: 1,
+            borderTopColor: colorScheme === "dark" ? "#1e293b" : "#e5e7eb",
+            paddingTop: 5,
+          }
+        }}>
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Studio',
+            tabBarIcon: ({ color }) => <TabBarIcon name="musical-notes" color={color} />,
+            header: () => <Header />,
+          }}
+        />
+        <Tabs.Screen
+          name="learn"
+          options={{
+            title: 'Learn',
+            tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+            header: () => <Header />,
+          }}
+        />
+        <Tabs.Screen
+          name="marketplace"
+          options={{
+            title: 'Marketplace',
+            tabBarIcon: ({ color }) => <TabBarIcon name="cart" color={color} />,
+            header: () => <Header />,
+          }}
+        />
+      </Tabs>
+    </SafeAreaView>
   );
 }
