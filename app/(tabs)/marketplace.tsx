@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
 
-export default function TabOneScreen() {
+export default function MarketPlace() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Studio</Text>
+      <Text style={styles.title}>MarketPlace</Text>
     </View>
   );
 }
